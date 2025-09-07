@@ -53,17 +53,13 @@ for i, line in enumerate(lines):
 
     # 選択肢の開始をチェック (「ア」〜「エ」で始まる行)
     if answer_option_pattern.match(line):
+        #  2つ以上のスペースで分割
         options.extend(re.split(r'\s{2,}', line.strip()))
         continue
 
     # 問題文の続きを追記（複数行にわたる場合）
-    if 'question_text' in current_question and line and not answer_option_pattern.match(line) and not re.match(r'^[a-z]\s', line):
-        current_question['question_text'] += ' ' + line.strip()
-    
-    # 選択肢 (a, b, c) を追加
-    if re.match(r'^[a-z]\s', line):
-        options.append(line.strip())
-
+    if 'question_text' in current_question and line and not answer_option_pattern.match(line):
+        current_question['question_text'] += '\n ' + line.strip()
 
 # 最後の問題を保存
 if current_question:
